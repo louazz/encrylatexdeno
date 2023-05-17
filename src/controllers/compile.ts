@@ -41,7 +41,7 @@ export const compileFile= async (
 
   const file = await Deno.readFile("./src/uploads/" + id + "/latex.pdf");
   const head = new Headers();
-  head.set("content-type", "application/pdf");
+  head.set("content-type", "multipart/form-data");
   response.head = head;
   response.body = file;
   response.status = 200;
@@ -72,7 +72,7 @@ export const Docx = async (
   const head = new Headers();
   head.set(
     "content-type",
-    "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+    "multipart/form-data",
   );
   response.head = head;
   response.body = file;
