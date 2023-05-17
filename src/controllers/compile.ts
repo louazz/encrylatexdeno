@@ -34,19 +34,10 @@ export const compileFile= async (
      console.log(result)
   };
     
-  try{
   // Call pandoc
   await nodePandoc(src, args, callback);
 
-}catch (error){
-  console.log(error)
-  const file = await Deno.readFile("./src/uploads/" + id + "/latex.pdf");
-  const head = new Headers();
-  head.set("content-type", "application/pdf");
-  response.head = head;
-  response.body = file;
-  response.status = 200;
-}
+
 
   const file = await Deno.readFile("./src/uploads/" + id + "/latex.pdf");
   const head = new Headers();
