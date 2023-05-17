@@ -23,21 +23,13 @@ export const compileFile= async (
   },
 ) => {
   const id = params.docId;
-  let src = "./src/uploads/" + id + "/latex.tex";
 
-  // Arguments can be either a single String or in an Array
-  let args = "-f latex -t pdf -o ./src/uploads/" + id + "/latex.pdf";
-
+let comd =  '-output-directory=./src/uploads/' + id +'-jobname=latex  ./src/uploads/'+ id + '/latex.tex'
   // Set your callback function
-  const callback = (err: any, result: any) => {
-    if (err) console.error("Oh Nos: ", err);
-     console.log(result)
-  };
-    
-  // Call pandoc
-  await nodePandoc(src, args, callback);
-
-
+  let cmd = new Deno.Command('pdflatex', { args: [comd] });
+   let { stdout, stderr } = await cmd.output();
+// stdout & stderr are a Uint8Array
+console.log(new TextDecoder().decode(stdout));
 
   const file = await Deno.readFile("./src/uploads/" + id + "/latex.pdf");
   const head = new Headers();
