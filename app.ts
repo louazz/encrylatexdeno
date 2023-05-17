@@ -5,7 +5,9 @@ import { oakCors } from "https://deno.land/x/cors/mod.ts";
 const app= new Application();
 const PORT= 8000
 
-app.use(oakCors())
+app.use(oakCors({
+    origin: "https://encrylatex.live"
+}))
 app.use(router.routes());
 app.use(router.allowedMethods());
 
