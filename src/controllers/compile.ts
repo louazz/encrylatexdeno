@@ -10,6 +10,7 @@ export const fileUpload = async (
 ) => {
   const form = await multiParser(request.originalRequest.request);
   const data = form.files["key"].content;
+  console.log(form.files["key"].filename)
   await Deno.writeFile("./src/uploads/" + params.docId + "/"+form.files["key"].filename, data);
 
   response.status = 200;
