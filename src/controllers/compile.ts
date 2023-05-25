@@ -15,7 +15,7 @@ export const fileUpload = async (
   response.status = 200;
 };
 
-export const compileFile = async (
+export const compileFile= async (
   { request, response, params }: {
     request: any;
     response: any;
@@ -23,29 +23,15 @@ export const compileFile = async (
   },
 ) => {
   const id = params.docId;
-  let src = "./src/uploads/" + id + "/latex.tex";
-
-  // Arguments can be either a single String or in an Array
-  let args = "-f latex -t pdf -o ./src/uploads/" + id + "/latex.pdf";
-
-  // Set your callback function
-  const callback = (err: any, result: any) => {
-    if (err) console.error("Oh Nos: ", err);
-    return console.log(result), result;
-  };
-
-  // Call pandoc
-  nodePandoc(src, args, callback);
-  let file = null;
-  try {
-    file = await Deno.readFile("./src/uploads/" + id + "/latex.pdf");
-  } catch (error) {
-
-    nodePandoc(src, args, callback);
-
-    file = await Deno.readFile("./src/uploads/" + id + "/latex.pdf");
-
-  }
+  
+  let cmd = new Deno.Command("pdflatex", { args: ['-output-directory=./src/uploads/'+id,'-jobname=latex', './src/uploads/'+id+'/latex.tex'] });
+   let { stdout, stderr } = await cmd.output();
+// stdout & stderr are a Uint8Array
+//console.log(new TextDecoder().decode(stdout));
+let file=null;
+  
+file = await Deno.readFile("./src/uploads/" + id + "/latex.pdf");
+  
   const head = new Headers();
   head.set("content-type", "application/pdf");
   response.head = head;
