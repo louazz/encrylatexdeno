@@ -25,12 +25,11 @@ export const compileFile= async (
   const id = params.docId;
   
   let cmd = new Deno.Command("pdflatex", { args: ['-output-directory=./src/uploads/'+id,'-jobname=latex', './src/uploads/'+id+'/latex.tex'] });
-   let { stdout, stderr } = await cmd.output();
-// stdout & stderr are a Uint8Array
-//console.log(new TextDecoder().decode(stdout));
-let file=null;
-  
-file = await Deno.readFile("./src/uploads/" + id + "/latex.pdf");
+  let { stdout, stderr } = await cmd.output();
+  // stdout & stderr are a Uint8Array
+  console.log(new TextDecoder().decode(stdout));
+ 
+  let file = await Deno.readFile("./src/uploads/" + id + "/latex.pdf");
   
   const head = new Headers();
   head.set("content-type", "application/pdf");
